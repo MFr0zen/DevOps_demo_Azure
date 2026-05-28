@@ -6,21 +6,21 @@ on:
       image_tag:
         required: true
         type: string
-      secrets:
-        AZURE_CONTAINER_REGISTRY:
-          required: true
-        RESOURCE_GROUP:
-          required: true  
-        AZURE_CLIENT_ID:
-          required: true
-        AZURE_TENANT_ID:
-          required: true
-        AZURE_SUBSCRIPTION_ID:
-          required: true
-        APP_CONFIG_NAME:
-          required: true
-        IMAGE_TAG_PARAM:
-          required: true
+    secrets:
+      AZURE_CONTAINER_REGISTRY:
+        required: true
+      RESOURCE_GROUP:
+        required: true  
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      APP_CONFIG_NAME:
+        required: true
+      IMAGE_TAG_PARAM:
+        required: true
 
 env:
   Image_Tag: ${{ inputs.image_tag }}
