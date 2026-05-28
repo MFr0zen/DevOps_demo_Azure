@@ -5,9 +5,9 @@ resource "azurerm_app_configuration" "main" {
   sku                 = "free"
 }
 
-resource "azurerm_app_configuration_key" "image_tag" {
-  configuration_store_id = azurerm_app_configuration.main.id
+# resource "azurerm_app_configuration_key" "image_tag" {
+#   configuration_store_id = azurerm_app_configuration.main.id
 
-  key   = "latest-image-tag"
-  value = "1.0.0"
-}
+#   key   = "latest-image-tag"
+#   value = "1.0.0"
+# }
