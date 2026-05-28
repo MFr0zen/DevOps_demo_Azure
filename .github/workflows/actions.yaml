@@ -1,0 +1,20 @@
+
+name: Pull_request
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    
+  test:
+    needs: build
+    uses: ./.github/workflows/test.yaml
+    
