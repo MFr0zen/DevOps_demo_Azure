@@ -24,9 +24,9 @@ on:
 
 env:
   Image_Tag: ${{ inputs.image_tag }}
-  AZURE_CONTAINER_REGISTRY: ${{ secret.AZURE_CONTAINER_REGISTRY }}
+  AZURE_CONTAINER_REGISTRY: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
   CONTAINER_NAME: "sample-app"
-  RESOURCE_GROUP: ${{ secret.RESOURCE_GROUP }}  
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}  
 
 permissions:
       contents: read

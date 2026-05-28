@@ -76,11 +76,11 @@ jobs:
       with:
             image_tag: ${{ needs.version-tag.outputs.version }} 
       secrets:
-        AZURE_CONTAINER_REGISTRY: ${{ secret.AZURE_CONTAINER_REGISTRY }}
+        AZURE_CONTAINER_REGISTRY: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
         APP_CONFIG_NAME: ${{ secrets.APP_CONFIG_NAME }}
         AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         IMAGE_TAG_PARAM: ${{ secrets.IMAGE_TAG_PARAM }}
-        RESOURCE_GROUP: ${{ secret.RESOURCE_GROUP }}
+        RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
         
