@@ -1,0 +1,86 @@
+name: Tag On merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  version-tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get next version
+        id: get_version
+        shell: bash
+        run: |
+          set -e
+
+          git fetch --tags
+
+          latest_tag=$(git tag --sort=-v:refname | head -n 1)
+
+          if [ -z "$latest_tag" ]; then
+            new_version="v1.0.0"
+          else
+            version=${latest_tag#v}
+            IFS='.' read -r major minor patch <<< "$version"
+            patch=$((patch + 1))
+            new_version="v${major}.${minor}.${patch}"
+          fi
+
+          echo "New version: $new_version"
+          echo "version=$new_version" >> "$GITHUB_OUTPUT"
+
+      - name: Create and push tag
+        shell: bash
+        run: |
+          set -e
+
+          git tag "${{ steps.get_version.outputs.version }}"
+          git push origin "${{ steps.get_version.outputs.version }}"
+
+  build:
+    needs: version-tag
+    uses: ./.github/workflows/build.yaml
+    
+  test:
+    needs: build
+    uses: ./.github/workflows/test.yaml
+
+  docker:
+      needs: [version-tag, test]
+      uses: ./.github/workflows/docker-build.yaml
+      with:
+        image_tag: ${{ needs.version-tag.outputs.version }}
+      secrets:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  azure:
+      needs: [version-tag, test]
+      uses: ./.github/workflows/azure.yaml
+      with:
+            image_tag: ${{ needs.version-tag.outputs.version }} 
+      secrets:
+        AZURE_CONTAINER_REGISTRY: ${{ secret.AZURE_CONTAINER_REGISTRY }}
+        APP_CONFIG_NAME: ${{ secrets.APP_CONFIG_NAME }}
+        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        IMAGE_TAG_PARAM: ${{ secrets.IMAGE_TAG_PARAM }}
+        RESOURCE_GROUP: ${{ secret.RESOURCE_GROUP }}
+        
