@@ -1,8 +1,7 @@
 name: Tag On merge
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - main
 
