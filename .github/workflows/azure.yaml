@@ -60,6 +60,10 @@ jobs:
         run: |
           docker push ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/app:${{ env.Image_Tag }}
       
+      - name: List App Configs
+        run: |
+          az appconfig list -o table
+
       - name: update image tag parameter
         run: |
           az appconfig kv set \
