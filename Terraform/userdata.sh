@@ -20,8 +20,14 @@ ACR_NAME="${acr_name}"
 ACR_LOGIN="${acr_login}"
 CONFIG_NAME="${config_name}"
 
-CONTAINER_NAME="my-devops-app"
+CONTAINER_NAME="sample-app"
 PORT=${app_port}
+
+# Add user to docker group
+usermod -aG docker azureuser
+
+# Wait for Docker
+sleep 10
 
 # Login using Managed Identity
 az login --identity > /dev/null
