@@ -11,6 +11,12 @@ resource "azurerm_role_assignment" "github_appconfig_writer" {
   principal_id         = azuread_service_principal.github.object_id
 }
 
+resource "azurerm_role_assignment" "github_aap_config_contribute" {
+  scope                = azurerm_app_configuration.main.id
+  role_definition_name = "App Configuration Contributor"
+  principal_id         = azuread_service_principal.github.object_id
+}
+
 # ----------------------------------------------------------------------
 
 # VM gets permission to read the latest image tag from app-configuration
