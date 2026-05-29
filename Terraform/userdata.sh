@@ -24,7 +24,7 @@ CONTAINER_NAME="sample-app"
 PORT=${app_port}
 
 # Add user to docker group
-usermod -aG docker azureuser
+usermod -aG docker azvmuser
 
 # Wait for Docker
 sleep 10
@@ -59,3 +59,31 @@ docker run -d \
 EOF
 
 chmod +x /usr/local/bin/deploy.sh
+
+
+# Create systemd service
+cat << 'EOF' > /etc/systemd/system/myapp.service
+[Unit]
+Description=My devops demo app
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/local/bin/deploy.sh
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Create cron job
+cat << 'EOF' > /etc/cron.d/myapp-deploy
+    */2 * * * * root /usr/local/bin/deploy.sh >> /var/log/deploy.log 2>&1
+EOF
+
+# Correct permissions
+chmod 644 /etc/cron.d/myapp-deploy
+
+systemctl daemon-reload
+systemctl enable --now myapp

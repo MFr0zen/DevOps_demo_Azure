@@ -26,6 +26,12 @@ resource "azurerm_role_assignment" "appconfig_reader" {
   principal_id         = azurerm_linux_virtual_machine.app.identity[0].principal_id
 }
 
+resource "azurerm_role_assignment" "appconfig_contribute" {
+  scope                = azurerm_app_configuration.main.id
+  role_definition_name = "App Configuration Contributor"
+  principal_id         = azurerm_linux_virtual_machine.app.identity[0].principal_id
+}
+
 # VM gets permission to pull images from acr
 resource "azurerm_role_assignment" "acr_pull" {
   scope                = azurerm_container_registry.acr.id
