@@ -3,7 +3,7 @@ import os
 
 app = FastAPI()
 
-VERSION = os.getenv("APP_VERSION", "1.0.0")
+VERSION = os.getenv("APP_VERSION", "1.0.7")
 
 @app.get("/")
 def root():
