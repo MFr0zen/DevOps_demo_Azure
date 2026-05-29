@@ -1,5 +1,5 @@
 resource "azurerm_linux_virtual_machine" "app" {
-  name                  = "app-vm"
+  name                  = "sample-app-vm"
   resource_group_name   = azurerm_resource_group.main.name
   location              = local.location
   size                  = "Standard_B2s_v2"
