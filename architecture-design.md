@@ -180,7 +180,7 @@ flowchart LR
 | Identity | System-assigned managed identity |
 | Bootstrap | `userdata.sh` via `custom_data` |
 
-On first boot, `userdata.sh` installs Docker, Azure CLI, and cron; writes `/usr/local/bin/deploy.sh`; enables a systemd unit and a cron job (every 2 minutes) to reconcile the running container with App Configuration.
+On first boot, `userdata.sh` installs Docker, Azure CLI, and cron; writes `/usr/local/bin/deploy.sh`; enables a systemd unit and a cron job (every 5 minutes) to reconcile the running container with App Configuration.
 
 ### Deploy script behavior (runtime, not Terraform)
 
@@ -380,18 +380,6 @@ devops-rg (azurerm_resource_group.main)
 | `az_fic.tf` | Federated identity credential |
 | `roles.tf` | RBAC role assignments |
 | `output.tf` | OIDC IDs, load balancer IP/FQDN |
-
----
-
-## 10. Known gaps and extension points
-
-| Item | Current state | Suggested follow-up |
-|------|---------------|---------------------|
-| NSG association | NSGs and rules exist but are not bound to subnets/NICs | Add `azurerm_subnet_network_security_group_association` on private subnet |
-| Public subnet | Empty | Place bastion/jump box or remove if unused |
-| Single VM | No HA | Add VMSS or second VM in backend pool |
-| App Config initial tag | Not set in active Terraform | Set `latest-image-tag` manually or uncomment `azurerm_app_configuration_key` |
-| Federated credential subject | Hard-coded to `MFr0zen/DevOps_demo_Azure` | Update `az_fic.tf` for forks or other branches |
 
 ---
 
