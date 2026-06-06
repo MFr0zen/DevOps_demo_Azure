@@ -79,16 +79,18 @@ flowchart TB
             PubNote["No NIC / VM in this subnet"]
         end
 
+        NATPIP["Public IP<br/>nat-public-ip"]
+        NAT["NAT Gateway<br/>app-nat-gateway"]
+
         subgraph PriSub["private-subnet · 10.0.2.0/24"]
             PriNSG["NSG: private-nsg<br/>rules: :8000 from LB + Internet<br/>(defined, not associated in TF)"]
-            NAT["NAT Gateway<br/>app-nat-gateway"]
-            NATPIP["Public IP<br/>nat-public-ip"]
             NI["NIC app-ni<br/>dynamic private IP"]
             VM["VM sample-app-vm<br/>Docker :8000"]
-            NATPIP --> NAT
-            NAT --> PriSub
             NI --> VM
         end
+
+        NATPIP --> NAT
+        NAT -.->|"subnet association"| PriSub
     end
 
     subgraph Edge["Public edge (outside subnets)"]
@@ -99,7 +101,8 @@ flowchart TB
 
     Internet["Internet"] --> LB
     LB -->|"frontend :80 → backend :8000"| NI
-    VM -->|"outbound via NAT"| Internet
+    VM --> NAT
+    NAT --> Internet
 ```
 
 ### Subnet and association matrix
