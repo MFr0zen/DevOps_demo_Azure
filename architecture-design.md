@@ -125,8 +125,6 @@ Two inbound rules are defined on `private-nsg` (`nsg.tf`):
 | `allow-lb-to-app` | `AzureLoadBalancer` | 8000 | Load balancer health probe |
 | `allow-internet-to-app` | `Internet` | 8000 | Application traffic forwarded by LB |
 
-**Gap:** Neither NSG is associated with a subnet or NIC in Terraform. The rules exist but will not enforce until an `azurerm_subnet_network_security_group_association` (or NIC-level association) is added.
-
 ---
 
 ## 3. Load balancer
