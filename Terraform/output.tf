@@ -11,9 +11,9 @@ output "subscription_id" {
 }
 
 output "load_balancer_public_ip" {
-  value = azurerm_public_ip.lb_pip.ip_address
+  value = azurerm_public_ip.lb_pubip.ip_address
 }
 
 output "load_balancer_fqdn" {
-  value = azurerm_public_ip.lb_pip.fqdn
+  value = azurerm_public_ip.lb_pubip.fqdn
 }

@@ -79,7 +79,7 @@ EOF
 
 # Create cron job
 cat << 'EOF' > /etc/cron.d/myapp-deploy
-    */2 * * * * root /usr/local/bin/deploy.sh >> /var/log/deploy.log 2>&1
+    */5 * * * * root /usr/local/bin/deploy.sh >> /var/log/deploy.log 2>&1
 EOF
 
 # Correct permissions
